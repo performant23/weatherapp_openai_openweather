@@ -3,8 +3,8 @@ import requests
 import json
 from geopy.geocoders import Nominatim
 
-openai.api_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-weather_api_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+openai.api_key = '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'
+weather_api_key = '6263d97f37f266cee69aae12105c11e8'
 
 def fetch_weather(city):
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={weather_api_key}&units=metric"
@@ -40,11 +40,11 @@ def generate_response(prompt):
 
 def chatbot():
     while True:
-        user_input = input("Enter Prompt: ")
-
-        response = generate_response("Is the query weather-related?")
+        user_input = input("Enter Prompt (or press 0 to abort): ")
+        if user_input == "0":
+            break
+        response = generate_response(user_input + "Is the previous statment about weather-related aspects (reply with yes/no)?")
         is_weather_related = response.lower().startswith("yes")
-
         if is_weather_related:
             location = extract_location(user_input)
             if location:
@@ -58,6 +58,8 @@ def chatbot():
         else:
             response = generate_response(user_input)
             print("Chatbot:", response)
+
+
 
 if __name__ == "__main__":
     chatbot()
