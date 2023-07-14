@@ -1,10 +1,10 @@
 import openai
 import requests
 import json
-from geopy.geocoders import Nominatim
 
-openai.api_key = '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'
-weather_api_key = '6263d97f37f266cee69aae12105c11e8'
+openai.api_key = 'xxxxxxxxxxxxxxxxxxx'
+weather_api_key = 'xxxxxxxxxxxxxxx'
+    
 
 def fetch_weather(city):
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={weather_api_key}&units=metric"
@@ -17,13 +17,6 @@ def fetch_weather(city):
     else:
         return "Failed to fetch weather information."
 
-def extract_location(prompt):
-    geolocator = Nominatim(user_agent="weather_bot")
-    location = geolocator.geocode(prompt)
-    if location:
-        return location.address
-    else:
-        return None
 
 def generate_response(prompt):
     try:
@@ -46,7 +39,8 @@ def chatbot():
         response = generate_response(user_input + "Is the previous statment about weather-related aspects (reply with yes/no)?")
         is_weather_related = response.lower().startswith("yes")
         if is_weather_related:
-            location = extract_location(user_input)
+            location = generate_response(user_input + "Detect only the location in the previous sentence (don't respond with anything else, just the location), if the sentence contains any place smaller than a city, detect its city and respond with just the city name")
+            print(location)
             if location:
                 weather_response = fetch_weather(location)
                 if weather_response == "Failed to fetch weather information.":
